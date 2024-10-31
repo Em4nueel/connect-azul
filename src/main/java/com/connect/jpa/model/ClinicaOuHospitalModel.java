@@ -1,6 +1,7 @@
 package com.connect.jpa.model;
 
 import java.io.Serializable;
+import java.util.List;
 import java.util.Objects;
 
 import jakarta.persistence.Column;
@@ -15,100 +16,93 @@ import jakarta.persistence.Table;
 @Entity
 @Table(name = "clinica_ou_hospital")
 public class ClinicaOuHospitalModel implements Serializable {
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
 
-	@Column(name = "nome_clinica_hospital")
-	private String nome;
+    @Column(name = "nome_clinica_hospital")
+    private String nome;
 
-	@Column(name = "cnpj", length = 14, nullable = false, unique = true)
-	private String cnpj;
+    @Column(name = "cnpj", length = 14, nullable = false, unique = true)
+    private String cnpj;
 
-	@OneToMany
-	@JoinColumn(name = "id_contato")
-	private ContatoModel contato;
+    @OneToMany
+    @JoinColumn(name = "id_clinica")
+    private List<ContatoModel> contatos;
 
-	@OneToMany
-	@JoinColumn(name = "id_endereço")
-	private EnderecoModel endereco;
+    @OneToMany
+    @JoinColumn(name = "id_clinica")
+    private List<EnderecoModel> enderecos;
 
-	ClinicaOuHospitalModel() {
+    public ClinicaOuHospitalModel() {}
 
-	}
+    public ClinicaOuHospitalModel(Long id, String nome, String cnpj, List<ContatoModel> contatos, List<EnderecoModel> enderecos) {
+        super();
+        this.id = id;
+        this.nome = nome;
+        this.cnpj = cnpj;
+        this.contatos = contatos;
+        this.enderecos = enderecos;
+    }
 
-	public ClinicaOuHospitalModel(Long id, String nome, String cnpj, ContatoModel contato, EnderecoModel endereco) {
-		super();
-		this.id = id;
-		this.nome = nome;
-		this.cnpj = cnpj;
-		this.contato = contato;
-		this.endereco = endereco;
-	}
+    public Long getId() {
+        return id;
+    }
 
-	public Long getId() {
-		return id;
-	}
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-	public void setId(Long id) {
-		this.id = id;
-	}
+    public String getNome() {
+        return nome;
+    }
 
-	public String getNome() {
-		return nome;
-	}
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
 
-	public void setNome(String nome) {
-		this.nome = nome;
-	}
+    public String getCnpj() {
+        return cnpj;
+    }
 
-	public String getCnpj() {
-		return cnpj;
-	}
+    public void setCnpj(String cnpj) {
+        this.cnpj = cnpj;
+    }
 
-	public void setCnpj(String cnpj) {
-		this.cnpj = cnpj;
-	}
+    public List<ContatoModel> getContatos() {
+        return contatos;
+    }
 
-	public ContatoModel getContato() {
-		return contato;
-	}
+    public void setContatos(List<ContatoModel> contatos) {
+        this.contatos = contatos;
+    }
 
-	public void setContato(ContatoModel contato) {
-		this.contato = contato;
-	}
+    public List<EnderecoModel> getEnderecos() {
+        return enderecos;
+    }
 
-	public EnderecoModel getEndereco() {
-		return endereco;
-	}
+    public void setEnderecos(List<EnderecoModel> enderecos) {
+        this.enderecos = enderecos;
+    }
 
-	public void setEndereco(EnderecoModel endereco) {
-		this.endereco = endereco;
-	}
+    @Override
+    public int hashCode() {
+        return Objects.hash(cnpj, contatos, enderecos, id, nome);
+    }
 
-	public static long getSerialversionuid() {
-		return serialVersionUID;
-	}
-
-	@Override
-	public int hashCode() {
-		return Objects.hash(cnpj, contato, endereco, id, nome);
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		ClinicaOuHospitalModel other = (ClinicaOuHospitalModel) obj;
-		return Objects.equals(cnpj, other.cnpj) && Objects.equals(contato, other.contato)
-				&& Objects.equals(endereco, other.endereco) && Objects.equals(id, other.id)
-				&& Objects.equals(nome, other.nome);
-	}
-
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        ClinicaOuHospitalModel other = (ClinicaOuHospitalModel) obj;
+        return Objects.equals(cnpj, other.cnpj) && Objects.equals(contatos, other.contatos)
+                && Objects.equals(enderecos, other.enderecos) && Objects.equals(id, other.id)
+                && Objects.equals(nome, other.nome);
+    }
 }

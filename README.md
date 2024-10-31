@@ -23,7 +23,7 @@ Connect Azul é uma iniciativa desenvolvida em parceria com a APAE que visa faci
   - Spring Boot 3.x
   - Spring Security
   - Spring Data JPA
-  - PostgreSQL
+  - MySQL
   - Maven
 
 - **Frontend:**

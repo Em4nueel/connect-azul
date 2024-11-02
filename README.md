@@ -28,8 +28,6 @@ Connect Azul é uma iniciativa desenvolvida em parceria com a APAE que visa faci
 
 - **Frontend:**
   - React.js
-  - TypeScript
-  - Tailwind CSS
   - Axios
   - React Query
 
@@ -43,7 +41,7 @@ Connect Azul é uma iniciativa desenvolvida em parceria com a APAE que visa faci
 - JDK 17+
 - Maven 3.8+
 - Node.js 18+
-- PostgreSQL 14+
+- PostgreSQL 16+
 - Docker (opcional)
 
 ## 🛠️ Instalação e Configuração

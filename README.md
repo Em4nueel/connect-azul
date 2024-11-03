@@ -43,9 +43,9 @@ git clone https://github.com/Em4nueel/connect-azul.git
 cd connect-azul
 ```
 
-3. Execute o projeto
+2. Execute o projeto
 ```bash
-mvn spring-boot:run
+mvn spring-boot:run --debug
 ```
 
 

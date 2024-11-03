@@ -92,4 +92,12 @@ public class ContatoModel implements Serializable {
 				&& Objects.equals(site, other.site) && Objects.equals(telefone, other.telefone);
 	}
 
+	@Override
+    public String toString() {
+        return "ContatoModel{" +
+               "Telefone='" + telefone + '\'' +
+               ", Site=" + site +
+               '}';
+    }
+
 }

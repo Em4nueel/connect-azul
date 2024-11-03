@@ -18,18 +18,12 @@ Connect Azul é uma iniciativa desenvolvida em parceria com a APAE que visa faci
 
 ## 🚀 Tecnologias Utilizadas
 
-- **Backend:**
   - Java 17
   - Spring Boot 3.x
   - Spring Security
   - Spring Data JPA
   - MySQL
   - Maven
-
-- **Frontend:**
-  - React.js
-  - Axios
-  - React Query
 
 - **Infraestrutura:**
   - Docker
@@ -40,9 +34,6 @@ Connect Azul é uma iniciativa desenvolvida em parceria com a APAE que visa faci
 
 - JDK 17+
 - Maven 3.8+
-- Node.js 18+
-- PostgreSQL 16+
-- Docker (opcional)
 
 ## 🛠️ Instalação e Configuração
 
@@ -52,35 +43,11 @@ git clone https://github.com/Em4nueel/connect-azul.git
 cd connect-azul
 ```
 
-2. Configure o banco de dados
+2. Execute o projeto
 ```bash
-# Crie um banco de dados PostgreSQL
-createdb connect_azul
-
-# Configure as variáveis de ambiente
-cp .env.example .env
-# Edite o arquivo .env com suas configurações
+mvn spring-boot:run --debug
 ```
 
-3. Execute o backend
-```bash
-cd backend
-mvn clean install
-mvn spring-boot:run
-```
-
-4. Execute o frontend
-```bash
-cd frontend
-npm install
-npm run dev
-```
-
-## 🐳 Executando com Docker
-
-```bash
-docker-compose up -d
-```
 
 ## 📚 Documentação da API
 
@@ -89,17 +56,6 @@ A documentação da API está disponível através do Swagger UI após iniciar o
 http://localhost:8080/swagger-ui.html
 ```
 
-## 🧪 Testes
-
-Para executar os testes do backend:
-```bash
-mvn test
-```
-
-Para executar os testes do frontend:
-```bash
-npm test
-```
 
 ## 🤝 Como Contribuir
 

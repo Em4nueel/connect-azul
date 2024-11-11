@@ -6,4 +6,3 @@ target/
 ### VS Code ###
 .vscode/
 data/connectdb.mv.db
-src/main/resources/application-test-properties

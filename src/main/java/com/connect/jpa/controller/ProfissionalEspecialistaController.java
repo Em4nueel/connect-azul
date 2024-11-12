@@ -21,8 +21,8 @@ public class ProfissionalEspecialistaController {
         return profissionalEspecialistaService.todosProfissionais();
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<ProfissionalEspecialistaModel> pegarPeloId(@PathVariable Long id) {
+    @GetMapping("{clinica_id}/{id}")
+    public ResponseEntity<ProfissionalEspecialistaModel> pegarPeloId(@PathVariable Long id, @PathVariable long clinica_id) {
         return profissionalEspecialistaService.pegarPeloId(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());

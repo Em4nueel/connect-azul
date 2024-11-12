@@ -87,7 +87,7 @@ public class PessoaFisicaModel implements Serializable {
 		return dataNascimento;
 	}
 
-	public void setData(Date dataNascimento) {
+	public void setDataNascimento(Date dataNascimento) {
 		this.dataNascimento = dataNascimento;
 	}
 

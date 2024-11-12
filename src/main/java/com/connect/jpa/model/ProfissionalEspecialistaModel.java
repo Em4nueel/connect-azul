@@ -1,6 +1,7 @@
 package com.connect.jpa.model;
 
 import java.io.Serializable;
+import java.sql.Date;
 import java.util.Objects;
 
 import com.connect.jpa.model.enums.FaixaEtariaModel;
@@ -12,18 +13,22 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "profissional_especialista")
-public class ProfissionalEspecialistaModel implements Serializable {
+public class ProfissionalEspecialistaModel extends PessoaModel implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 
-	private String email;
+	@OneToOne
+	@JoinColumn(name = "usuario_id")
+	private UserInfo usuario;
 
 	@Enumerated(EnumType.STRING)
 	private TipoProfissionalModel especialista;
@@ -37,14 +42,13 @@ public class ProfissionalEspecialistaModel implements Serializable {
 
 	}
 
-	public ProfissionalEspecialistaModel(Long id, String email, TipoProfissionalModel especialista,
-			FaixaEtariaModel idadePaciente, Boolean experiencia) {
-		super();
-		this.id = id;
-		this.email = email;
+	public ProfissionalEspecialistaModel(UserInfo usuario, TipoProfissionalModel especialista,
+			FaixaEtariaModel idadePaciente, Boolean experiencia, String nomeCompleto, String cpf, Date dataNascimento, EnderecoModel endereco) {
+		super(nomeCompleto, cpf, dataNascimento, endereco);
 		this.especialista = especialista;
 		this.idadePaciente = idadePaciente;
 		this.experiencia = experiencia;
+		this.usuario = usuario;
 	}
 
 	public Long getId() {
@@ -53,14 +57,6 @@ public class ProfissionalEspecialistaModel implements Serializable {
 
 	public void setId(Long id) {
 		this.id = id;
-	}
-
-	public String getEmail() {
-		return email;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
 	}
 
 	public TipoProfissionalModel getEspecialista() {
@@ -89,7 +85,7 @@ public class ProfissionalEspecialistaModel implements Serializable {
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(email, especialista, experiencia, id, idadePaciente);
+		return Objects.hash(especialista, experiencia, id, idadePaciente);
 	}
 
 	@Override
@@ -101,7 +97,7 @@ public class ProfissionalEspecialistaModel implements Serializable {
 		if (getClass() != obj.getClass())
 			return false;
 		ProfissionalEspecialistaModel other = (ProfissionalEspecialistaModel) obj;
-		return Objects.equals(email, other.email) && especialista == other.especialista
+		return especialista == other.especialista
 				&& Objects.equals(experiencia, other.experiencia) && Objects.equals(id, other.id)
 				&& idadePaciente == other.idadePaciente;
 	}

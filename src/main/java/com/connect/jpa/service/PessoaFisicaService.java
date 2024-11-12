@@ -30,12 +30,10 @@ public class PessoaFisicaService {
 
     public Optional<PessoaFisicaModel> atualizarPessoa(long id, PessoaFisicaModel pessoaAtualizada) {
         return repository.findById(id).map(record -> {
-            record.setEmail(pessoaAtualizada.getEmail());
             record.setNomeCompleto(pessoaAtualizada.getNomeCompleto());
             record.setCpf(pessoaAtualizada.getCpf());
             record.setDataNascimento(pessoaAtualizada.getDataNascimento());
             record.setEndereco(pessoaAtualizada.getEndereco());
-            record.setContato(pessoaAtualizada.getContato());
             return repository.save(record);
         });
     }

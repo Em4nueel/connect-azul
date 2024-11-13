@@ -22,13 +22,13 @@ public class PessoaFisicaModel extends PessoaModel implements Serializable {
 
 	@OneToOne
 	@JoinColumn(name = "usuario_id")
-	private UserInfo usuario;
+	private UserInfoModel usuario;
 
 	PessoaFisicaModel() {
 
 	}
 
-	public PessoaFisicaModel(UserInfo usuario, String nomeCompleto, String cpf, Date dataNascimento, EnderecoModel endereco) {
+	public PessoaFisicaModel(UserInfoModel usuario, String nomeCompleto, String cpf, Date dataNascimento, EnderecoModel endereco) {
 		super(nomeCompleto, cpf, dataNascimento, endereco);
 		this.usuario = usuario;
 	}

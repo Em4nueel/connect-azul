@@ -28,7 +28,7 @@ public class ProfissionalEspecialistaModel extends PessoaModel implements Serial
 
 	@OneToOne
 	@JoinColumn(name = "usuario_id")
-	private UserInfo usuario;
+	private UserInfoModel usuario;
 
 	@Enumerated(EnumType.STRING)
 	private TipoProfissionalModel especialista;
@@ -42,7 +42,7 @@ public class ProfissionalEspecialistaModel extends PessoaModel implements Serial
 
 	}
 
-	public ProfissionalEspecialistaModel(UserInfo usuario, TipoProfissionalModel especialista,
+	public ProfissionalEspecialistaModel(UserInfoModel usuario, TipoProfissionalModel especialista,
 			FaixaEtariaModel idadePaciente, Boolean experiencia, String nomeCompleto, String cpf, Date dataNascimento, EnderecoModel endereco) {
 		super(nomeCompleto, cpf, dataNascimento, endereco);
 		this.especialista = especialista;

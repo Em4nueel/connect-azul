@@ -1,13 +1,15 @@
 package com.connect.jpa.repository;
 
-import org.springframework.data.jpa.repository.JpaRepository; 
+import java.util.Optional;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.stereotype.Repository;
 
-import com.connect.jpa.model.UserInfo;
+import com.connect.jpa.model.UserInfoModel;
 
-import java.util.Optional; 
-  
+@EnableJpaRepositories(basePackages = "com.connect.jpa.repository")
 @Repository
-public interface UserInfoRepository extends JpaRepository<UserInfo, Integer> { 
-    Optional<UserInfo> findByName(String username); 
+public interface UserInfoRepository extends JpaRepository<UserInfoModel, Long> { 
+    Optional<UserInfoModel> findByName(String username); 
 }

@@ -20,6 +20,7 @@ import com.connect.jpa.filter.JwtAuthFilter;
 import com.connect.jpa.repository.UserInfoRepository;
 import com.connect.jpa.service.UserInfoService;
 
+
 import static org.springframework.security.config.Customizer.withDefaults;
 @Configuration
 @EnableWebSecurity
@@ -40,15 +41,21 @@ public class SecurityConfig {
             .authorizeHttpRequests((authz) -> authz
                 .requestMatchers("/auth/generateToken", "/auth/register").permitAll()
                 .requestMatchers("/swagger-ui/**",
-                    "/v3/api-docs/**",
                     "/swagger-resources/**",
                     "/swagger-ui.html",
-                    "/webjars/**"
+                    "/webjars/**",
+                    "/api/clinicas/"
                     ).authenticated()
+                .requestMatchers("/error").permitAll()
+                .requestMatchers("/v3/api-docs/**").permitAll()
                 .requestMatchers("/h2-console/**").permitAll()
                 .requestMatchers("/auth/hello").authenticated()
+                .requestMatchers("/auth/logout").authenticated()
             )
+            .authorizeHttpRequests(auth -> auth.requestMatchers(toH2Console()).permitAll())
+            .headers(headers -> headers.frameOptions(frameOptions -> frameOptions.disable()))
             .authorizeHttpRequests(auth -> auth .requestMatchers(toH2Console()).permitAll())
+            .csrf(csrf -> csrf.ignoringRequestMatchers(toH2Console()))
             .httpBasic(withDefaults()).csrf((csrf) -> csrf.ignoringRequestMatchers(toH2Console()))
             .httpBasic(withDefaults()).csrf((csrf) -> csrf.disable())
             .sessionManagement((session) -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))

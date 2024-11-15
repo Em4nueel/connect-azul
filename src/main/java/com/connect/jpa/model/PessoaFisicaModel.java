@@ -8,6 +8,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
@@ -24,6 +25,10 @@ public class PessoaFisicaModel extends PessoaModel implements Serializable {
 	@JoinColumn(name = "usuario_id")
 	private UserInfo usuario;
 
+	@ManyToOne
+    @JoinColumn(name = "dependente_de", referencedColumnName = "id")
+    private PessoaFisicaModel dependenteDe;
+
 	PessoaFisicaModel() {
 
 	}
@@ -37,6 +42,14 @@ public class PessoaFisicaModel extends PessoaModel implements Serializable {
 	public Long getId() {
 		return id;
 	}
+
+	public PessoaFisicaModel getDependenteDe() {
+        return dependenteDe;
+    }
+
+    public void setDependenteDe(PessoaFisicaModel dependenteDe) {
+        this.dependenteDe = dependenteDe;
+    }
 
 
 	public static long getSerialversionuid() {

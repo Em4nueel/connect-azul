@@ -30,20 +30,13 @@ public class SecurityConfig {
     public SecurityConfig(JwtAuthFilter authFilter) { 
         this.authFilter = authFilter; 
     }
-    
-    /**
-     * Todos os metodos/atributos dentro de uma interface são abstratos
-     * então é necessario retirar o "public" da frente do metodo 
-     */
-
     // User Creation 
     @Bean
-    UserDetailsService userDetailsService(UserInfoRepository repository, PasswordEncoder passwordEncoder) { 
+    public UserDetailsService userDetailsService(UserInfoRepository repository, PasswordEncoder passwordEncoder) { 
         return new UserInfoService(repository, passwordEncoder); 
-    }
-
+    } 
     @Bean
-    SecurityFilterChain filterChain(HttpSecurity http, AuthenticationProvider authenticationProvider) throws Exception { 
+    public SecurityFilterChain filterChain(HttpSecurity http, AuthenticationProvider authenticationProvider) throws Exception { 
         return http
             .authorizeHttpRequests((authz) -> authz
                 .requestMatchers("/auth/generateToken", "/auth/register").permitAll()
@@ -70,17 +63,15 @@ public class SecurityConfig {
             .addFilterBefore(authFilter, UsernamePasswordAuthenticationFilter.class)
             .build();
     }
-
     @Bean
-    AuthenticationProvider authenticationProvider(UserDetailsService userDetailsService, PasswordEncoder passwordEncoder) {
+    public AuthenticationProvider authenticationProvider(UserDetailsService userDetailsService, PasswordEncoder passwordEncoder) {
         DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
         authenticationProvider.setUserDetailsService(userDetailsService);
         authenticationProvider.setPasswordEncoder(passwordEncoder);
         return authenticationProvider;
     }
-
     @Bean
-    AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception { 
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception { 
         return config.getAuthenticationManager(); 
     } 
 }

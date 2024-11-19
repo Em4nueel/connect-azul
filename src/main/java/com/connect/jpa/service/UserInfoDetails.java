@@ -13,7 +13,9 @@ import java.util.stream.Collectors;
 
 
 public class UserInfoDetails implements UserDetails { 
-    private String name; 
+    private static final long serialVersionUID = 1L;
+    
+	private String name; 
     private String password; 
     private List<GrantedAuthority> authorities; 
     public UserInfoDetails(UserInfo userInfo) { 

@@ -20,6 +20,7 @@ import com.connect.jpa.filter.JwtAuthFilter;
 import com.connect.jpa.repository.UserInfoRepository;
 import com.connect.jpa.service.UserInfoService;
 
+
 import static org.springframework.security.config.Customizer.withDefaults;
 @Configuration
 @EnableWebSecurity
@@ -29,33 +30,32 @@ public class SecurityConfig {
     public SecurityConfig(JwtAuthFilter authFilter) { 
         this.authFilter = authFilter; 
     }
-    
-    /**
-     * Todos os metodos/atributos dentro de uma interface são abstratos
-     * então é necessario retirar o "public" da frente do metodo 
-     */
-
     // User Creation 
     @Bean
-    UserDetailsService userDetailsService(UserInfoRepository repository, PasswordEncoder passwordEncoder) { 
+    public UserDetailsService userDetailsService(UserInfoRepository repository, PasswordEncoder passwordEncoder) { 
         return new UserInfoService(repository, passwordEncoder); 
-    }
-
+    } 
     @Bean
-    SecurityFilterChain filterChain(HttpSecurity http, AuthenticationProvider authenticationProvider) throws Exception { 
+    public SecurityFilterChain filterChain(HttpSecurity http, AuthenticationProvider authenticationProvider) throws Exception { 
         return http
             .authorizeHttpRequests((authz) -> authz
                 .requestMatchers("/auth/generateToken", "/auth/register").permitAll()
                 .requestMatchers("/swagger-ui/**",
-                    "/v3/api-docs/**",
                     "/swagger-resources/**",
                     "/swagger-ui.html",
-                    "/webjars/**"
+                    "/webjars/**",
+                    "/api/clinicas/"
                     ).authenticated()
+                .requestMatchers("/error").permitAll()
+                .requestMatchers("/v3/api-docs/**").permitAll()
                 .requestMatchers("/h2-console/**").permitAll()
                 .requestMatchers("/auth/hello").authenticated()
+                .requestMatchers("/auth/logout").authenticated()
             )
+            .authorizeHttpRequests(auth -> auth.requestMatchers(toH2Console()).permitAll())
+            .headers(headers -> headers.frameOptions(frameOptions -> frameOptions.disable()))
             .authorizeHttpRequests(auth -> auth .requestMatchers(toH2Console()).permitAll())
+            .csrf(csrf -> csrf.ignoringRequestMatchers(toH2Console()))
             .httpBasic(withDefaults()).csrf((csrf) -> csrf.ignoringRequestMatchers(toH2Console()))
             .httpBasic(withDefaults()).csrf((csrf) -> csrf.disable())
             .sessionManagement((session) -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
@@ -63,17 +63,15 @@ public class SecurityConfig {
             .addFilterBefore(authFilter, UsernamePasswordAuthenticationFilter.class)
             .build();
     }
-
     @Bean
-    AuthenticationProvider authenticationProvider(UserDetailsService userDetailsService, PasswordEncoder passwordEncoder) {
+    public AuthenticationProvider authenticationProvider(UserDetailsService userDetailsService, PasswordEncoder passwordEncoder) {
         DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
         authenticationProvider.setUserDetailsService(userDetailsService);
         authenticationProvider.setPasswordEncoder(passwordEncoder);
         return authenticationProvider;
     }
-
     @Bean
-    AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception { 
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception { 
         return config.getAuthenticationManager(); 
     } 
 }

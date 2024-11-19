@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import com.connect.jpa.model.AuthRequest;
 import com.connect.jpa.model.UserInfo;
 import com.connect.jpa.service.JwtService;
+import com.connect.jpa.service.LogoutService;
 import com.connect.jpa.service.UserInfoService;
   
 @RestController
@@ -19,7 +20,9 @@ public class UserController {
     private final UserInfoService service; 
     private final JwtService jwtService; 
     private final AuthenticationManager authenticationManager; 
-    UserController(UserInfoService service, JwtService jwtService, AuthenticationManager authenticationManager) { 
+    private final LogoutService logoutService;
+    UserController(UserInfoService service, JwtService jwtService, AuthenticationManager authenticationManager, LogoutService logoutService) {
+        this.logoutService = logoutService;
         this.service = service; 
         this.jwtService = jwtService; 
         this.authenticationManager = authenticationManager; 
@@ -45,6 +48,14 @@ public class UserController {
         } else { 
             throw new UsernameNotFoundException("Invalid user request!"); 
         } 
-    } 
-  
+    }
+
+    @DeleteMapping("/logout")
+    public ResponseEntity<String> logout(@RequestHeader("Authorization") String authorizationHeader) {
+        String token = authorizationHeader.replace("Bearer ", "");
+
+        logoutService.revokeToken(token);
+
+        return ResponseEntity.ok("Logout realizado com sucesso");
+    }
 }

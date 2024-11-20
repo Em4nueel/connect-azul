@@ -29,11 +29,11 @@ public class ClinicaOuHospitalModel implements Serializable {
     @Column(name = "cnpj", length = 14, nullable = false, unique = true)
     private String cnpj;
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "id_clinica")
     private List<ContatoModel> contatos;
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "id_clinica")
     private List<EnderecoModel> enderecos;
 

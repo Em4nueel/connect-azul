@@ -13,14 +13,22 @@ import com.connect.jpa.model.UserInfo;
 import com.connect.jpa.service.JwtService;
 import com.connect.jpa.service.LogoutService;
 import com.connect.jpa.service.UserInfoService;
+
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import io.swagger.v3.oas.annotations.Parameter;
   
 @RestController
-@RequestMapping("/auth") 
+@RequestMapping("/auth")
+@Tag(name = "Autenticação", description = "Endpoints de autenticação e registro de usuários") 
 public class UserController { 
     private final UserInfoService service; 
     private final JwtService jwtService; 
     private final AuthenticationManager authenticationManager; 
     private final LogoutService logoutService;
+
     UserController(UserInfoService service, JwtService jwtService, AuthenticationManager authenticationManager, LogoutService logoutService) {
         this.logoutService = logoutService;
         this.service = service; 
@@ -29,18 +37,47 @@ public class UserController {
     }
 
     @GetMapping("/hello")
+    @Operation(
+        summary = "Endpoint de Teste", 
+        description = "Retorna uma mensagem de saudação"
+    )
+    @ApiResponses({
+        @ApiResponse(responseCode = "200", description = "Mensagem retornada com sucesso")
+    })
     public String hello() {
         return "Hello World!";
     }
   
     @PostMapping("/register") 
-    public ResponseEntity<String> addNewUser(@RequestBody UserInfo userInfo) { 
+    @Operation(
+        summary = "Registrar Novo Usuário", 
+        description = "Cadastra um novo usuário no sistema"
+    )
+    @ApiResponses({
+        @ApiResponse(responseCode = "201", description = "Usuário criado com sucesso"),
+        @ApiResponse(responseCode = "400", description = "Dados inválidos para registro")
+    })
+    public ResponseEntity<String> addNewUser(
+        @Parameter(description = "Informações do usuário") 
+        @RequestBody UserInfo userInfo
+    ) { 
         String response = service.addUser(userInfo); 
         return ResponseEntity.status(HttpStatus.CREATED).body(response); 
     } 
   
     @PostMapping("/generateToken") 
-    public ResponseEntity<String> authenticateAndGetToken(@RequestBody AuthRequest authRequest) { 
+    @Operation(
+        summary = "Gerar Token de Autenticação", 
+        description = "Autentica usuário e gera token JWT"
+    )
+    @ApiResponses({
+        @ApiResponse(responseCode = "200", description = "Token gerado com sucesso"),
+        @ApiResponse(responseCode = "401", description = "Credenciais inválidas")
+    })
+    public ResponseEntity<String> authenticateAndGetToken(
+        @Parameter(description = "Credenciais de autenticação") 
+        @RequestBody AuthRequest authRequest
+    ) { 
         Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authRequest.getUsername(), authRequest.getPassword())); 
         if (authentication.isAuthenticated()) { 
             String token = jwtService.generateToken(authRequest.getUsername());
@@ -51,11 +88,20 @@ public class UserController {
     }
 
     @DeleteMapping("/logout")
-    public ResponseEntity<String> logout(@RequestHeader("Authorization") String authorizationHeader) {
+    @Operation(
+        summary = "Logout de Usuário", 
+        description = "Revoga o token de autenticação do usuário"
+    )
+    @ApiResponses({
+        @ApiResponse(responseCode = "200", description = "Logout realizado com sucesso"),
+        @ApiResponse(responseCode = "400", description = "Erro ao realizar logout")
+    })
+    public ResponseEntity<String> logout(
+        @Parameter(description = "Token de autorização") 
+        @RequestHeader("Authorization") String authorizationHeader
+    ) {
         String token = authorizationHeader.replace("Bearer ", "");
-
         logoutService.revokeToken(token);
-
         return ResponseEntity.ok("Logout realizado com sucesso");
     }
   

@@ -1,6 +1,8 @@
 package com.connect.jpa.model;
 
 import java.sql.Date;
+
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.MappedSuperclass;
 import jakarta.persistence.OneToOne;
 import java.util.Objects;
@@ -12,7 +14,7 @@ public class PessoaModel {
     private String cpf;
     private Date dataNascimento;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     private EnderecoModel endereco;
 
     public PessoaModel() {}

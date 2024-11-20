@@ -46,15 +46,17 @@ public class SecurityConfig {
         return http
             .authorizeHttpRequests((authz) -> authz
                 .requestMatchers("/auth/generateToken", "/auth/register").permitAll()
+                .requestMatchers(
+                    "/api/clinicas/",
+                    "/api/clinicas/novo",
+                    "/api/clinicas/{id}"
+                    ).authenticated()
+                .requestMatchers("/error").permitAll()
                 .requestMatchers("/swagger-ui/**",
                     "/v3/api-docs/**",
                     "/swagger-resources/**",
                     "/swagger-ui.html",
-                    "/webjars/**",
-                    "/api/clinicas/"
-                    ).authenticated()
-                .requestMatchers("/error").permitAll()
-                .requestMatchers("/v3/api-docs/**").permitAll()
+                    "/webjars/**").permitAll()
                 .requestMatchers("/h2-console/**").permitAll()
                 .requestMatchers("/auth/hello").authenticated()
                 .requestMatchers("/auth/logout").authenticated()

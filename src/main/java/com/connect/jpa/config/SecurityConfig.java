@@ -50,11 +50,19 @@ public class SecurityConfig {
                     "/v3/api-docs/**",
                     "/swagger-resources/**",
                     "/swagger-ui.html",
-                    "/webjars/**"
+                    "/webjars/**",
+                    "/api/clinicas/"
                     ).authenticated()
+                .requestMatchers("/error").permitAll()
+                .requestMatchers("/v3/api-docs/**").permitAll()
                 .requestMatchers("/h2-console/**").permitAll()
                 .requestMatchers("/auth/hello").authenticated()
+                .requestMatchers("/auth/logout").authenticated()
             )
+            .authorizeHttpRequests(auth -> auth.requestMatchers(toH2Console()).permitAll())
+            .headers(headers -> headers.frameOptions(frameOptions -> frameOptions.disable())
+            )
+            .csrf(csrf -> csrf.ignoringRequestMatchers(toH2Console()))
             .authorizeHttpRequests(auth -> auth .requestMatchers(toH2Console()).permitAll())
             .httpBasic(withDefaults()).csrf((csrf) -> csrf.ignoringRequestMatchers(toH2Console()))
             .httpBasic(withDefaults()).csrf((csrf) -> csrf.disable())

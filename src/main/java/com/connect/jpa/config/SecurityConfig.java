@@ -1,3 +1,4 @@
+
 package com.connect.jpa.config;
 
 // Importações estáticas para simplificar código

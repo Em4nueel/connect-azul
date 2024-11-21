@@ -7,6 +7,7 @@ import java.util.Objects;
 import com.connect.jpa.model.enums.FaixaEtariaModel;
 import com.connect.jpa.model.enums.TipoProfissionalModel;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -26,7 +27,7 @@ public class ProfissionalEspecialistaModel extends PessoaModel implements Serial
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 
-	@OneToOne
+	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "usuario_id")
 	private UserInfo usuario;
 
@@ -43,7 +44,8 @@ public class ProfissionalEspecialistaModel extends PessoaModel implements Serial
 	}
 
 	public ProfissionalEspecialistaModel(UserInfo usuario, TipoProfissionalModel especialista,
-			FaixaEtariaModel idadePaciente, Boolean experiencia, String nomeCompleto, String cpf, Date dataNascimento, EnderecoModel endereco) {
+			FaixaEtariaModel idadePaciente, Boolean experiencia, String nomeCompleto, String cpf, Date dataNascimento,
+			EnderecoModel endereco) {
 		super(nomeCompleto, cpf, dataNascimento, endereco);
 		this.especialista = especialista;
 		this.idadePaciente = idadePaciente;
@@ -97,9 +99,8 @@ public class ProfissionalEspecialistaModel extends PessoaModel implements Serial
 		if (getClass() != obj.getClass())
 			return false;
 		ProfissionalEspecialistaModel other = (ProfissionalEspecialistaModel) obj;
-		return especialista == other.especialista
-				&& Objects.equals(experiencia, other.experiencia) && Objects.equals(id, other.id)
-				&& idadePaciente == other.idadePaciente;
+		return especialista == other.especialista && Objects.equals(experiencia, other.experiencia)
+				&& Objects.equals(id, other.id) && idadePaciente == other.idadePaciente;
 	}
 
 }

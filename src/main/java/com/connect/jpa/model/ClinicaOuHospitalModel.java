@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.Objects;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -28,19 +29,18 @@ public class ClinicaOuHospitalModel implements Serializable {
     @Column(name = "cnpj", length = 14, nullable = false, unique = true)
     private String cnpj;
 
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "id_clinica")
     private List<ContatoModel> contatos;
 
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "id_clinica")
     private List<EnderecoModel> enderecos;
 
     public ClinicaOuHospitalModel() {}
 
-    public ClinicaOuHospitalModel(Long id, String nome, String cnpj, List<ContatoModel> contatos, List<EnderecoModel> enderecos) {
+    public ClinicaOuHospitalModel(String nome, String cnpj, List<ContatoModel> contatos, List<EnderecoModel> enderecos) {
         super();
-        this.id = id;
         this.nome = nome;
         this.cnpj = cnpj;
         this.contatos = contatos;

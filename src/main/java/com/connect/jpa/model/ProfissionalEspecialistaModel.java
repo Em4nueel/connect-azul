@@ -4,8 +4,8 @@ import java.io.Serializable;
 import java.sql.Date;
 import java.util.Objects;
 
+
 import com.connect.jpa.model.enums.FaixaEtariaModel;
-import com.connect.jpa.model.enums.TipoProfissionalModel;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
@@ -15,6 +15,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
@@ -31,8 +32,9 @@ public class ProfissionalEspecialistaModel extends PessoaModel implements Serial
 	@JoinColumn(name = "usuario_id")
 	private UserInfo usuario;
 
-	@Enumerated(EnumType.STRING)
-	private TipoProfissionalModel especialista;
+	@ManyToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "especialidade_id")
+	private EspecialidadeModel especialidade;
 
 	@Enumerated(EnumType.STRING)
 	private FaixaEtariaModel idadePaciente;
@@ -43,11 +45,11 @@ public class ProfissionalEspecialistaModel extends PessoaModel implements Serial
 
 	}
 
-	public ProfissionalEspecialistaModel(UserInfo usuario, TipoProfissionalModel especialista,
+	public ProfissionalEspecialistaModel(UserInfo usuario, EspecialidadeModel especialidade,
 			FaixaEtariaModel idadePaciente, Boolean experiencia, String nomeCompleto, String cpf, Date dataNascimento,
 			EnderecoModel endereco) {
 		super(nomeCompleto, cpf, dataNascimento, endereco);
-		this.especialista = especialista;
+		this.especialidade = especialidade;
 		this.idadePaciente = idadePaciente;
 		this.experiencia = experiencia;
 		this.usuario = usuario;
@@ -61,12 +63,12 @@ public class ProfissionalEspecialistaModel extends PessoaModel implements Serial
 		this.id = id;
 	}
 
-	public TipoProfissionalModel getEspecialista() {
-		return especialista;
+	public EspecialidadeModel getEspecialista() {
+		return especialidade;
 	}
 
-	public void setEspecialista(TipoProfissionalModel especialista) {
-		this.especialista = especialista;
+	public void setEspecialidade(EspecialidadeModel especialidade) {
+		this.especialidade = especialidade;
 	}
 
 	public FaixaEtariaModel getIdadePaciente() {
@@ -87,7 +89,7 @@ public class ProfissionalEspecialistaModel extends PessoaModel implements Serial
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(especialista, experiencia, id, idadePaciente);
+		return Objects.hash(especialidade, experiencia, id, idadePaciente);
 	}
 
 	@Override
@@ -99,7 +101,7 @@ public class ProfissionalEspecialistaModel extends PessoaModel implements Serial
 		if (getClass() != obj.getClass())
 			return false;
 		ProfissionalEspecialistaModel other = (ProfissionalEspecialistaModel) obj;
-		return especialista == other.especialista && Objects.equals(experiencia, other.experiencia)
+		return especialidade == other.especialidade && Objects.equals(experiencia, other.experiencia)
 				&& Objects.equals(id, other.id) && idadePaciente == other.idadePaciente;
 	}
 

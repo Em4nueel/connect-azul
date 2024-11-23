@@ -17,70 +17,77 @@ import jakarta.persistence.Table;
 @Table(name = "clinica_profissional")
 public class ClinicaProfissionalModel implements Serializable {
 
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
 
-	@ManyToOne
-	@JoinColumn(name = "id_clinica", nullable = false)
-	private ClinicaOuHospitalModel clinica;
+    @Column(name = "id_clinica", nullable = false)
+    private Long clinicaId;
 
-	@ManyToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "id_profissional", nullable = false)
-	private ProfissionalEspecialistaModel profissional;
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "id_profissional", nullable = false)
+    private ProfissionalEspecialistaModel profissional;
 
-	@Column(name = "especialidade")
-	private String especialidade;
+    @Column(name = "especialidade")
+    private String especialidade;
 
-	public ClinicaProfissionalModel() {
-	}
+    public ClinicaProfissionalModel() {
+    }
 
-	public ClinicaProfissionalModel(ClinicaOuHospitalModel clinica, ProfissionalEspecialistaModel profissional) {
-		this.clinica = clinica;
-		this.profissional = profissional;
-	}
+    public ClinicaProfissionalModel(Long clinicaId, ProfissionalEspecialistaModel profissional) {
+        this.clinicaId = clinicaId;
+        this.profissional = profissional;
+    }
 
-	public Long getId() {
-		return id;
-	}
+    public Long getId() {
+        return id;
+    }
 
-	public ClinicaOuHospitalModel getClinica() {
-		return clinica;
-	}
+    public Long getClinicaId() {
+        return clinicaId;
+    }
 
-	public void setClinica(ClinicaOuHospitalModel clinica) {
-		this.clinica = clinica;
-	}
+    public void setClinicaId(Long clinicaId) {
+        this.clinicaId = clinicaId;
+    }
 
-	public ProfissionalEspecialistaModel getProfissional() {
-		return profissional;
-	}
+    public ProfissionalEspecialistaModel getProfissional() {
+        return profissional;
+    }
 
-	public void setProfissional(ProfissionalEspecialistaModel profissional) {
-		this.profissional = profissional;
-	}
+    public void setProfissional(ProfissionalEspecialistaModel profissional) {
+        this.profissional = profissional;
+    }
 
-	@Override
-	public int hashCode() {
-		return Objects.hash(clinica, id, profissional, especialidade);
-	}
+    public String getEspecialidade() {
+        return especialidade;
+    }
 
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) {
-			return true;
-		}
-		if (obj == null) {
-			return false;
-		}
-		if (getClass() != obj.getClass()) {
-			return false;
-		}
-		ClinicaProfissionalModel other = (ClinicaProfissionalModel) obj;
-		return Objects.equals(clinica, other.clinica) && Objects.equals(id, other.id)
-				&& Objects.equals(profissional, other.profissional)
-				&& Objects.equals(especialidade, other.especialidade);
-	}
+    public void setEspecialidade(String especialidade) {
+        this.especialidade = especialidade;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(clinicaId, id, profissional, especialidade);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        ClinicaProfissionalModel other = (ClinicaProfissionalModel) obj;
+        return Objects.equals(clinicaId, other.clinicaId) && Objects.equals(id, other.id)
+                && Objects.equals(profissional, other.profissional)
+                && Objects.equals(especialidade, other.especialidade);
+    }
 }

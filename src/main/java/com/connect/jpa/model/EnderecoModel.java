@@ -21,7 +21,6 @@ public class EnderecoModel implements Serializable {
     private Long id;
 
     @NotNull
-    @Size(max = 255)
     @Column(nullable = false, length = 255)
     @Schema(description = "Nome da rua do endereço", example = "Rua das Palmeiras")
     private String rua;
@@ -32,19 +31,16 @@ public class EnderecoModel implements Serializable {
     private Double numero;
 
     @NotNull
-    @Size(max = 100)
     @Column(nullable = false, length = 100)
     @Schema(description = "Nome do bairro", example = "Centro")
     private String bairro;
 
     @NotNull
-    @Size(max = 20)
     @Column(nullable = false, length = 20)
     @Schema(description = "CEP do endereço", example = "59000-000")
     private String cep;
 
     @NotNull
-    @Size(max = 100)
     @Column(nullable = false, length = 100)
     @Schema(description = "Cidade do endereço", example = "Natal")
     private String cidade;
@@ -53,7 +49,6 @@ public class EnderecoModel implements Serializable {
     @Schema(description = "Estado do endereço (focado no RN)", example = "RN")
     private String estado = "RN";  // Fixo para o RN
 
-    @Size(max = 100)
     @Column(length = 100)
     @Schema(description = "Complemento do endereço", example = "Apartamento 101")
     private String complemento;

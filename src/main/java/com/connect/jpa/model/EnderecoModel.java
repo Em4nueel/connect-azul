@@ -2,7 +2,6 @@ package com.connect.jpa.model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.io.Serializable;

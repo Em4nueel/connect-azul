@@ -2,7 +2,6 @@ package com.connect.jpa.model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.io.Serializable;
@@ -129,7 +128,6 @@ public class EnderecoModel implements Serializable {
         this.complemento = complemento;
     }
 
-    // Métodos equals e hashCode
     @Override
     public int hashCode() {
         return Objects.hash(id, rua, numero, bairro, cep, cidade, estado, complemento);

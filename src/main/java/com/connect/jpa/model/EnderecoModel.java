@@ -15,7 +15,7 @@ public class EnderecoModel implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)  // Uso de AUTO para auto incremento.
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     @Schema(description = "Identificador único do endereço", example = "1")
     private Long id;
@@ -37,10 +37,11 @@ public class EnderecoModel implements Serializable {
     @Schema(description = "Nome do bairro", example = "Centro")
     private String bairro;
 
+    @NotNull
     @Size(max = 20)
-    @Column(length = 20)
+    @Column(nullable = false, length = 20)
     @Schema(description = "CEP do endereço", example = "59000-000")
-    private String cep;  // Opcional
+    private String cep;
 
     @NotNull
     @Size(max = 100)
@@ -55,11 +56,10 @@ public class EnderecoModel implements Serializable {
     @Size(max = 100)
     @Column(length = 100)
     @Schema(description = "Complemento do endereço", example = "Apartamento 101")
-    private String complemento;  // Opcional
+    private String complemento;
 
     // Construtores
-    public EnderecoModel() {
-    }
+    public EnderecoModel() {}
 
     public EnderecoModel(Long id, String rua, Double numero, String bairro, String cep, String cidade, String complemento) {
         this.id = id;

@@ -47,13 +47,12 @@ public class EnderecoModel implements Serializable {
 
     @Column(nullable = false, length = 2)
     @Schema(description = "Estado do endereço (focado no RN)", example = "RN")
-    private String estado = "RN";  // Fixo para o RN
+    private String estado = "RN"; 
 
     @Column(length = 100)
     @Schema(description = "Complemento do endereço", example = "Apartamento 101")
     private String complemento;
 
-    // Construtores
     public EnderecoModel() {}
 
     public EnderecoModel(Long id, String rua, Double numero, String bairro, String cep, String cidade, String complemento) {
@@ -66,7 +65,6 @@ public class EnderecoModel implements Serializable {
         this.complemento = complemento;
     }
 
-    // Getters e Setters
     public Long getId() {
         return id;
     }

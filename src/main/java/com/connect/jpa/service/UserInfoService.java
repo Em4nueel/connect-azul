@@ -24,7 +24,7 @@ public class UserInfoService implements UserDetailsService {
 
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		Optional<UserInfo> userDetail = repository.findByName(username);
+		Optional<UserInfo> userDetail = repository.findByNome(username);
 		// Converting userDetail to UserDetails
 		return userDetail.map(UserInfoDetails::new)
 				.orElseThrow(() -> new UsernameNotFoundException("User not found " + username));
@@ -32,12 +32,12 @@ public class UserInfoService implements UserDetailsService {
 
 	public String addUser(UserInfo userInfo) {
 		// Verifica se já existe um usuário com o mesmo nome no banco de dados
-		if (repository.findByName(userInfo.getName()).isPresent()) {
+		if (repository.findByNome(userInfo.getNome()).isPresent()) {
 			// Se encontrar, lança uma exceção informando que o nome de usuário já existe
-			throw new IllegalArgumentException("User with name " + userInfo.getName() + " already exists.");
+			throw new IllegalArgumentException("User with name " + userInfo.getNome() + " already exists.");
 		}
 		// Codifica a senha do usuário usando o PasswordEncoder antes de salvar no banco
-		userInfo.setPassword(encoder.encode(userInfo.getPassword()));
+		userInfo.setSenha(encoder.encode(userInfo.getSenha()));
 		// Salva o objeto UserInfo no repositório (persistência no banco de dados)
 		repository.save(userInfo);
 		// Retorna uma mensagem de sucesso indicando que o usuário foi adicionado

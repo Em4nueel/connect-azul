@@ -23,13 +23,18 @@ public class ClinicaOuHospitalController {
     @GetMapping
     @Operation(
         summary = "Listar Clínicas", 
-        description = "Recupera todas as clínicas e hospitais cadastrados"
+        description = "Recupera todas as clínicas e hospitais cadastrados, com a opção de filtrar por um termo de busca"
     )
     @ApiResponses({
         @ApiResponse(responseCode = "200", description = "Clínicas listadas com sucesso"),
         @ApiResponse(responseCode = "204", description = "Nenhuma clínica encontrada")
     })
-    public List<ClinicaOuHospitalModel> todasClinicas() {
+    public List<ClinicaOuHospitalModel> todasClinicas(
+        @RequestParam(required = false) String query
+    ) {
+        if (query != null && !query.isEmpty()) {
+            return clinicaOuHospitalService.buscarPorTermo(query);
+        }
         return clinicaOuHospitalService.todasClinicas();
     }
 

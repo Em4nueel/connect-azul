@@ -19,6 +19,10 @@ public class ClinicaOuHospitalService {
         return repository.findAll();
     }
 
+    public List<ClinicaOuHospitalModel> buscarPorTermo(String termo) {
+        return repository.findByNomeContainingIgnoreCase(termo);
+    }
+
     public Optional<ClinicaOuHospitalModel> pegarPeloId(Long id) {
         return repository.findById(id);
     }

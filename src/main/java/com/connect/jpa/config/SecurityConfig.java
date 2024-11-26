@@ -95,42 +95,25 @@ public class SecurityConfig implements WebMvcConfigurer {  // Implementa WebMvcC
     @Bean
     SecurityFilterChain filterChain(HttpSecurity http, AuthenticationProvider authenticationProvider) throws Exception {
         return http
-            // Configura regras de autorização de requisições
+            .cors(withDefaults()) // Ativa o suporte a CORS no Spring Security
             .authorizeHttpRequests(authz -> authz
-                // Libera acesso para os endpoints públicos definidos acima
                 .requestMatchers(PUBLIC_ENDPOINTS).permitAll()
-                
-                // Libera acesso para o console do H2
                 .requestMatchers(toH2Console()).permitAll()
-                
-                // Qualquer outro endpoint exige autenticação
                 .anyRequest().authenticated()
             )
-            
-            // Configura a exibição de cabeçalhos HTTP
             .headers(headers -> headers
-                .frameOptions(frameOptions -> frameOptions.disable())  // Desabilita a proteção de frame para o H2
+                .frameOptions(frameOptions -> frameOptions.disable()) // Permite o H2
             )
-            
-            // Configurações de CSRF (Cross-Site Request Forgery)
             .csrf(csrf -> csrf
-                .ignoringRequestMatchers(toH2Console())  // Ignora CSRF para o H2
-                .disable()  // Desabilita CSRF (não recomendado em produção sem ajustes)
+                .ignoringRequestMatchers(toH2Console()) // Ignora CSRF para o H2
+                .disable() // Desabilita CSRF
             )
-            
-            // Gerenciamento de sessões (usado para APIs REST)
             .sessionManagement(session -> session
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)  // Usa política sem estado (ideal para APIs)
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
             )
-            
-            // Configura o provedor de autenticação
             .authenticationProvider(authenticationProvider)
-            
-            // Adiciona o filtro JWT antes do filtro de autenticação padrão
             .addFilterBefore(authFilter, UsernamePasswordAuthenticationFilter.class)
-            
-            // Habilita autenticação HTTP básica
-            .httpBasic(withDefaults()) 
+            .httpBasic(withDefaults())
             .build();
     }
 

@@ -21,8 +21,6 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import com.connect.jpa.filter.JwtAuthFilter;
-import com.connect.jpa.repository.UserInfoRepository;
-import com.connect.jpa.service.UserInfoService;
 
 /**
  * Classe de configuração central de segurança para a aplicação.
@@ -37,17 +35,19 @@ import com.connect.jpa.service.UserInfoService;
  * - @EnableWebSecurity: Habilita a configuração de segurança web do Spring
  * - @EnableMethodSecurity: Permite usar anotações de segurança em métodos
  */
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity(
-    prePostEnabled = true,   // Permite @PreAuthorize e @PostAuthorize
-    securedEnabled = true,   // Habilita anotação @Secured
-    jsr250Enabled = true     // Permite anotações @RolesAllowed
+    prePostEnabled = true,   // Permite o uso das anotações @PreAuthorize e @PostAuthorize nos métodos
+    securedEnabled = true,   // Habilita o uso da anotação @Secured
+    jsr250Enabled = true     // Permite o uso da anotação @RolesAllowed
 )
-public class SecurityConfig { 
+public class SecurityConfig implements WebMvcConfigurer {  // Implementa WebMvcConfigurer para configurar o CORS
 
-    // Array de endpoints públicos que não requerem autenticação
-    // IMPORTANTE: Manter atualizado conforme necessidades do projeto
+    // Definindo os endpoints públicos que não requerem autenticação
     private static final String[] PUBLIC_ENDPOINTS = {
         "/auth/generateToken",   // Endpoint para geração de token
         "/auth/register",        // Endpoint de registro de usuário
@@ -63,130 +63,102 @@ public class SecurityConfig {
     // Filtro JWT para autenticação baseada em token
     private final JwtAuthFilter authFilter;
 
-    /**
-     * Construtor para injeção do filtro JWT.
-     * 
-     * @param authFilter Filtro de autenticação JWT
-     */
-    public SecurityConfig(JwtAuthFilter authFilter) { 
-        this.authFilter = authFilter; 
+    // Construtor da classe, injetando o filtro JWT
+    public SecurityConfig(JwtAuthFilter authFilter) {
+        this.authFilter = authFilter;
     }
-    
-    /**
-     * Configura o codificador de senhas.
-     * 
-     * @return PasswordEncoder configurado com BCrypt
-     * 
-     * Notas:
-     * - BCryptPasswordEncoder é seguro para ambiente de produção
-     * - Sem parâmetro, usa força padrão (custo de 10)
-     */
 
     /**
-     * Cria o serviço de detalhes do usuário.
+     * Adiciona configurações de CORS, permitindo requisições de origens específicas.
+     * Aqui configuramos para que as requisições do frontend (localhost:5173) sejam permitidas.
      * 
-     * @param repository Repositório de usuários
-     * @param passwordEncoder Codificador de senhas
-     * @return Serviço de detalhes do usuário
+     * @param registry Usado para registrar as configurações de CORS
      */
-    @Bean
-    UserDetailsService userDetailsService(
-        UserInfoRepository repository, 
-        PasswordEncoder passwordEncoder
-    ) { 
-        return new UserInfoService(repository, passwordEncoder); 
+    @Override
+    public void addCorsMappings(CorsRegistry registry) {
+        registry.addMapping("/**")  // Configura CORS para todos os endpoints
+                .allowedOrigins("http://localhost:5173") // Permite origens do frontend (ajustar conforme necessário)
+                .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS") // Permite métodos HTTP específicos
+                .allowedHeaders("*") // Permite qualquer cabeçalho
+                .allowCredentials(true); // Permite o envio de cookies (ex: tokens JWT)
     }
 
     /**
      * Configuração principal da cadeia de filtros de segurança.
+     * Define as regras de autorização, gerenciamento de sessões e os filtros de segurança a serem aplicados.
      * 
-     * Defines:
-     * - Quais endpoints são públicos
-     * - Regras de autorização
-     * - Configurações de sessão
-     * - Filtros de segurança
-     * 
-     * @param http Configurador de segurança HTTP
+     * @param http Configuração da segurança HTTP
      * @param authenticationProvider Provedor de autenticação
-     * @return Cadeia de filtros de segurança
-     * @throws Exception Em caso de erro de configuração
+     * @return A cadeia de filtros de segurança
+     * @throws Exception Se ocorrer algum erro de configuração
      */
     @Bean
-    SecurityFilterChain filterChain(
-        HttpSecurity http, 
-        AuthenticationProvider authenticationProvider
-    ) throws Exception { 
+    SecurityFilterChain filterChain(HttpSecurity http, AuthenticationProvider authenticationProvider) throws Exception {
         return http
-            // Configuração de autorização de requisições
+            // Configura regras de autorização de requisições
             .authorizeHttpRequests(authz -> authz
-                // Libera endpoints públicos
+                // Libera acesso para os endpoints públicos definidos acima
                 .requestMatchers(PUBLIC_ENDPOINTS).permitAll()
                 
-                // Libera endpoints do H2 Console
+                // Libera acesso para o console do H2
                 .requestMatchers(toH2Console()).permitAll()
                 
-                // Qualquer outro endpoint requer autenticação
+                // Qualquer outro endpoint exige autenticação
                 .anyRequest().authenticated()
             )
             
-            // Desabilita proteção de frame para H2 Console
+            // Configura a exibição de cabeçalhos HTTP
             .headers(headers -> headers
-                .frameOptions(frameOptions -> frameOptions.disable())
+                .frameOptions(frameOptions -> frameOptions.disable())  // Desabilita a proteção de frame para o H2
             )
             
             // Configurações de CSRF (Cross-Site Request Forgery)
             .csrf(csrf -> csrf
-                .ignoringRequestMatchers(toH2Console()) // Ignora CSRF para H2
-                .disable() // Desabilitado para simplicidade (ajustar em produção)
+                .ignoringRequestMatchers(toH2Console())  // Ignora CSRF para o H2
+                .disable()  // Desabilita CSRF (não recomendado em produção sem ajustes)
             )
             
-            // Configuração de gerenciamento de sessão
+            // Gerenciamento de sessões (usado para APIs REST)
             .sessionManagement(session -> session
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS) // Ideal para APIs REST
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)  // Usa política sem estado (ideal para APIs)
             )
             
-            // Registra provedor de autenticação
+            // Configura o provedor de autenticação
             .authenticationProvider(authenticationProvider)
             
-            // Adiciona filtro JWT antes do filtro padrão de autenticação
+            // Adiciona o filtro JWT antes do filtro de autenticação padrão
             .addFilterBefore(authFilter, UsernamePasswordAuthenticationFilter.class)
             
             // Habilita autenticação HTTP básica
-            .httpBasic(withDefaults())
+            .httpBasic(withDefaults()) 
             .build();
     }
 
     /**
-     * Cria provedor de autenticação baseado em DAO (Data Access Object).
+     * Cria e configura o provedor de autenticação.
+     * Este provedor é usado para carregar os detalhes do usuário a partir do banco de dados.
      * 
      * @param userDetailsService Serviço de detalhes do usuário
      * @param passwordEncoder Codificador de senhas
-     * @return Provedor de autenticação
-     * 
-     * Funcionalidades:
-     * - Carrega usuário do banco de dados
-     * - Verifica credenciais
+     * @return O provedor de autenticação
      */
     @Bean
-    AuthenticationProvider authenticationProvider(
-        UserDetailsService userDetailsService, 
-        PasswordEncoder passwordEncoder
-    ) {
+    AuthenticationProvider authenticationProvider(UserDetailsService userDetailsService, PasswordEncoder passwordEncoder) {
         DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
-        authenticationProvider.setUserDetailsService(userDetailsService);
-        authenticationProvider.setPasswordEncoder(passwordEncoder);
+        authenticationProvider.setUserDetailsService(userDetailsService);  // Define o serviço que carrega os detalhes do usuário
+        authenticationProvider.setPasswordEncoder(passwordEncoder);        // Define o codificador de senha
         return authenticationProvider;
     }
 
     /**
-     * Gerencia o processo de autenticação.
+     * Configura o gerenciamento de autenticação.
      * 
      * @param config Configuração de autenticação
-     * @return Gerenciador de autenticação
-     * @throws Exception Em caso de erro de configuração
+     * @return O gerenciador de autenticação
+     * @throws Exception Se ocorrer algum erro de configuração
      */
     @Bean
     AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception { 
-        return config.getAuthenticationManager(); 
+        return config.getAuthenticationManager(); // Obtém o gerenciador de autenticação
     } 
 }

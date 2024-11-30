@@ -29,7 +29,7 @@ public class ProfissionalEspecialistaModel extends PessoaModel implements Serial
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "usuario_id")
-    private UserInfo usuario;
+    private Usuario usuario;
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "especialidade_id")
@@ -43,7 +43,7 @@ public class ProfissionalEspecialistaModel extends PessoaModel implements Serial
     public ProfissionalEspecialistaModel() {
     }
 
-    public ProfissionalEspecialistaModel(UserInfo usuario, EspecialidadeModel especialidade,
+    public ProfissionalEspecialistaModel(Usuario usuario, EspecialidadeModel especialidade,
                                           FaixaEtariaModel idadePaciente, Boolean experiencia,
                                           String nomeCompleto, String cpf, Date dataNascimento,
                                           EnderecoModel endereco) {

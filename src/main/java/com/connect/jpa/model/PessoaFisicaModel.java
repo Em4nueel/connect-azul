@@ -24,13 +24,13 @@ public class PessoaFisicaModel extends PessoaModel implements Serializable {
 
 	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "usuario_id")
-	private UserInfo usuario;
+	private Usuario usuario;
 
 	PessoaFisicaModel() {
 
 	}
 
-	public PessoaFisicaModel(UserInfo usuario, String nomeCompleto, String cpf, Date dataNascimento, EnderecoModel endereco) {
+	public PessoaFisicaModel(Usuario usuario, String nomeCompleto, String cpf, Date dataNascimento, EnderecoModel endereco) {
 		super(nomeCompleto, cpf, dataNascimento, endereco);
 		this.usuario = usuario;
 	}

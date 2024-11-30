@@ -9,7 +9,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 
 import com.connect.jpa.model.AuthRequest;
-import com.connect.jpa.model.UserInfo;
+import com.connect.jpa.model.Usuario;
 import com.connect.jpa.service.JwtService;
 import com.connect.jpa.service.LogoutService;
 import com.connect.jpa.service.UserInfoService;
@@ -59,7 +59,7 @@ public class UserController {
     })
     public ResponseEntity<String> addNewUser(
         @Parameter(description = "Informações do usuário") 
-        @RequestBody UserInfo userInfo
+        @RequestBody Usuario userInfo
     ) { 
         String response = service.addUser(userInfo); 
         return ResponseEntity.status(HttpStatus.CREATED).body(response); 

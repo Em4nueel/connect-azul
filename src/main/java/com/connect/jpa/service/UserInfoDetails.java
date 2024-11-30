@@ -4,7 +4,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority; 
 import org.springframework.security.core.userdetails.UserDetails;
 
-import com.connect.jpa.model.UserInfo;
+import com.connect.jpa.model.Usuario;
 
 import java.util.Arrays; 
 import java.util.Collection; 
@@ -18,7 +18,7 @@ public class UserInfoDetails implements UserDetails {
 	private String name; 
     private String password; 
     private List<GrantedAuthority> authorities; 
-    public UserInfoDetails(UserInfo userInfo) { 
+    public UserInfoDetails(Usuario userInfo) { 
         name = userInfo.getNome(); 
         password = userInfo.getSenha(); 
         authorities = Arrays.stream(userInfo.getRoles().split(",")) 

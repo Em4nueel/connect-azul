@@ -12,12 +12,12 @@ import com.connect.jpa.model.Usuario;
 import com.connect.jpa.repository.UserInfoRepository;
 
 @Service
-public class UserInfoService implements UserDetailsService {
+public class UsuarioService implements UserDetailsService {
 
 	private final UserInfoRepository repository;
 	private final PasswordEncoder encoder;
 
-	public UserInfoService(UserInfoRepository repository, PasswordEncoder encoder) {
+	public UsuarioService(UserInfoRepository repository, PasswordEncoder encoder) {
 		this.repository = repository;
 		this.encoder = encoder;
 	}
@@ -30,7 +30,7 @@ public class UserInfoService implements UserDetailsService {
 				.orElseThrow(() -> new UsernameNotFoundException("User not found " + username));
 	}
 
-	public String addUser(Usuario userInfo) {
+	public Usuario addUser(Usuario userInfo) {
 		// Verifica se já existe um usuário com o mesmo nome no banco de dados
 		if (repository.findByNome(userInfo.getNome()).isPresent()) {
 			// Se encontrar, lança uma exceção informando que o nome de usuário já existe
@@ -41,10 +41,6 @@ public class UserInfoService implements UserDetailsService {
 		userInfo.setSenha(encoder.encode(userInfo.getSenha()));
 	
 		// Salva o objeto UserInfo no repositório (persistência no banco de dados)
-		userInfo = repository.save(userInfo); // O ID será gerado automaticamente aqui
-	
-		// Retorna o objeto UserInfo com o ID gerado
-		return userInfo;
+		return repository.save(userInfo); // O ID será gerado automaticamente aqui
 	}
-
 }

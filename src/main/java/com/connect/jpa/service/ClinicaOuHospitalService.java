@@ -1,5 +1,6 @@
 package com.connect.jpa.service;
 import com.connect.jpa.model.ClinicaOuHospitalModel;
+import com.connect.jpa.model.Usuario;
 import com.connect.jpa.repository.ClinicaOuHospitalRepository;
 import org.springframework.stereotype.Service;
 import java.util.List;
@@ -10,9 +11,11 @@ import java.util.Optional;
 public class ClinicaOuHospitalService {
 
     private final ClinicaOuHospitalRepository repository;
+    private final UsuarioService usuarioService;
 
-    public ClinicaOuHospitalService(ClinicaOuHospitalRepository repository) {
+    public ClinicaOuHospitalService(ClinicaOuHospitalRepository repository, UsuarioService usuarioService) {
         this.repository = repository;
+        this.usuarioService = usuarioService;
     }
 
     public List<ClinicaOuHospitalModel> todasClinicas() {
@@ -28,6 +31,14 @@ public class ClinicaOuHospitalService {
     }
 
     public ClinicaOuHospitalModel criarClinica(ClinicaOuHospitalModel clinica) {
+        Usuario usuario = new Usuario();
+        usuario.setNome(clinica.getNome());
+        usuario.setSenha(clinica.getCnpj());
+
+        Usuario usuarioCriado = usuarioService.addUser(usuario);
+
+        clinica.setUsuario(usuarioCriado);
+
         return repository.save(clinica);
     }
 

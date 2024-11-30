@@ -46,7 +46,6 @@ public class ProfissionalEspecialistaModel extends PessoaModel implements Serial
         this.especialidade = especialidade;
         this.faixaEtaria = idadePaciente;
         this.experiencia = experiencia;
-        this.usuario = usuario;
     }
 
     public Long getId() {

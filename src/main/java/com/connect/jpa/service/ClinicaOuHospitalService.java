@@ -3,6 +3,8 @@ import com.connect.jpa.model.ClinicaOuHospitalModel;
 import com.connect.jpa.model.Usuario;
 import com.connect.jpa.repository.ClinicaOuHospitalRepository;
 import org.springframework.stereotype.Service;
+
+import java.text.Normalizer;
 import java.util.List;
 import java.util.Optional;
 
@@ -23,7 +25,11 @@ public class ClinicaOuHospitalService {
     }
 
     public List<ClinicaOuHospitalModel> buscarPorTermo(String termo) {
-        return repository.findByNomeContainingIgnoreCase(termo);
+        String termoNormalizado = Normalizer.normalize(termo, Normalizer.Form.NFD)
+        .replaceAll("[\\p{InCombiningDiacriticalMarks}]", "")
+        .toLowerCase();
+
+        return repository.findByNomeNormalizado(termoNormalizado + "%");
     }
 
     public Optional<ClinicaOuHospitalModel> pegarPeloId(Long id) {

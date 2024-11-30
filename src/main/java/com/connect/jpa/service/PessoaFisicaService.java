@@ -1,5 +1,5 @@
 package com.connect.jpa.service;
-import com.connect.jpa.model.PessoaFisicaModel;
+import com.connect.jpa.model.PacienteModel;
 import com.connect.jpa.repository.PessoaFisicaRepository;
 import org.springframework.stereotype.Service;
 import java.util.List;
@@ -16,19 +16,19 @@ public class PessoaFisicaService {
         this.repository = repository;
     }
 
-    public List<PessoaFisicaModel> todasPessoas() {
+    public List<PacienteModel> todasPessoas() {
         return repository.findAll();
     }
 
-    public Optional<PessoaFisicaModel> pegarPeloId(long id) {
+    public Optional<PacienteModel> pegarPeloId(long id) {
         return repository.findById(id);
     }
 
-    public PessoaFisicaModel criarPessoa(PessoaFisicaModel pessoa) {
+    public PacienteModel criarPessoa(PacienteModel pessoa) {
         return repository.save(pessoa);
     }
 
-    public Optional<PessoaFisicaModel> atualizarPessoa(long id, PessoaFisicaModel pessoaAtualizada) {
+    public Optional<PacienteModel> atualizarPessoa(long id, PacienteModel pessoaAtualizada) {
         return repository.findById(id).map(record -> {
             record.setNomeCompleto(pessoaAtualizada.getNomeCompleto());
             record.setCpf(pessoaAtualizada.getCpf());

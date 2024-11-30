@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import com.connect.jpa.service.JwtService;
-import com.connect.jpa.service.UserInfoService;
+import com.connect.jpa.service.UsuarioService;
 import com.connect.jpa.service.LogoutService;
 
 import java.io.IOException;
@@ -21,10 +21,10 @@ import java.io.IOException;
 @Component
 public class JwtAuthFilter extends OncePerRequestFilter { 
     private final JwtService jwtService; 
-    private final UserInfoService userDetailsService; 
+    private final UsuarioService userDetailsService; 
     private final LogoutService logoutService;
 
-    public JwtAuthFilter(JwtService jwtService, UserInfoService userDetailsService, LogoutService logoutService) {
+    public JwtAuthFilter(JwtService jwtService, UsuarioService userDetailsService, LogoutService logoutService) {
         this.jwtService = jwtService; 
         this.userDetailsService = userDetailsService;
         this.logoutService = logoutService; 

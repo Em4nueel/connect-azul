@@ -57,6 +57,8 @@ public class SecurityConfig implements WebMvcConfigurer {  // Implementa WebMvcC
         "/swagger-ui/**",        // Interface do Swagger
         "/swagger-ui.html",      // Página principal do Swagger
         "/webjars/**",           // Recursos web para Swagger
+        "/api/pacientes/novo",
+        "/api/clinicas/novo",
         "/swagger-resources/**"  // Recursos de configuração do Swagger
     };
 

@@ -11,7 +11,7 @@ import com.connect.jpa.model.ClinicaOuHospitalModel;
 
 @Repository
 public interface ClinicaOuHospitalRepository extends JpaRepository<ClinicaOuHospitalModel, Long> {
-    @Query("SELECT c FROM ClinicaOuHospital c " +
-       "WHERE LOWER(UNACCENT(c.nome)) LIKE LOWER(UNACCENT(:termo))")
+    @Query("SELECT c FROM ClinicaOuHospitalModel c " +
+           "WHERE LOWER(c.nome) LIKE LOWER(CONCAT(:termo, '%'))")
     List<ClinicaOuHospitalModel> findByNomeNormalizado(@Param("termo") String termo);
 }

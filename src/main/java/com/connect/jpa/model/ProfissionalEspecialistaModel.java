@@ -26,9 +26,13 @@ public class ProfissionalEspecialistaModel extends PessoaModel implements Serial
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-	@ManyToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "especialidade_id")
-	private EspecialidadeModel especialidade;
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "usuario_id")
+    private Usuario usuario;
+
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "especialidade_id")
+    private EspecialidadeModel especialidade;
 
     @Enumerated(EnumType.STRING)
     private FaixaEtariaModel faixaEtaria;
@@ -38,7 +42,7 @@ public class ProfissionalEspecialistaModel extends PessoaModel implements Serial
     public ProfissionalEspecialistaModel() {
     }
 
-    public ProfissionalEspecialistaModel(UserInfo usuario, EspecialidadeModel especialidade,
+    public ProfissionalEspecialistaModel(Usuario usuario, EspecialidadeModel especialidade,
                                           FaixaEtariaModel idadePaciente, Boolean experiencia,
                                           String nomeCompleto, String cpf, Date dataNascimento,
                                           EnderecoModel endereco) {

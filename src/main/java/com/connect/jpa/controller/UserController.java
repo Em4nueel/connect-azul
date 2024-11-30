@@ -9,7 +9,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 
 import com.connect.jpa.model.AuthRequest;
-import com.connect.jpa.model.UserInfo;
+import com.connect.jpa.model.Usuario;
 import com.connect.jpa.service.JwtService;
 import com.connect.jpa.service.LogoutService;
 import com.connect.jpa.service.UserInfoService;
@@ -57,12 +57,12 @@ public class UserController {
         @ApiResponse(responseCode = "201", description = "Usuário criado com sucesso"),
         @ApiResponse(responseCode = "400", description = "Dados inválidos para registro")
     })
-    public ResponseEntity<UserInfo> addNewUser(
-        @Parameter(description = "Informações do usuário")
-        @RequestBody UserInfo userInfo
-    ) {
-        UserInfo newUser = service.addUser(userInfo); // Aqui você obtém o usuário completo, incluindo o ID
-        return ResponseEntity.status(HttpStatus.CREATED).body(newUser); // Retorna o usuário com o ID
+    public ResponseEntity<String> addNewUser(
+        @Parameter(description = "Informações do usuário") 
+        @RequestBody Usuario userInfo
+    ) { 
+        String response = service.addUser(userInfo); 
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
     } 
   
     @PostMapping("/generateToken") 

@@ -39,11 +39,11 @@ public class ClinicaOuHospitalModel implements Serializable {
 
     @OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "usuario_id")
-	private UserInfo usuario;
+	private Usuario usuario;
 
     public ClinicaOuHospitalModel() {}
 
-    public ClinicaOuHospitalModel(UserInfo usuario, String nome, String cnpj, List<ContatoModel> contatos, List<EnderecoModel> enderecos) {
+    public ClinicaOuHospitalModel(String nome, String cnpj, List<ContatoModel> contatos, List<EnderecoModel> enderecos, Usuario usuario) {
         super();
         this.nome = nome;
         this.cnpj = cnpj;
@@ -90,6 +90,14 @@ public class ClinicaOuHospitalModel implements Serializable {
 
     public void setEnderecos(List<EnderecoModel> enderecos) {
         this.enderecos = enderecos;
+    }
+
+    public Usuario getUsuario() {
+        return usuario;
+    }
+
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
     }
 
     @Override

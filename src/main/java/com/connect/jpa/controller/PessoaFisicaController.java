@@ -1,6 +1,6 @@
 package com.connect.jpa.controller;
 
-import com.connect.jpa.model.PessoaFisicaModel;
+import com.connect.jpa.model.PacienteModel;
 import com.connect.jpa.service.PessoaFisicaService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -30,7 +30,7 @@ public class PessoaFisicaController {
         @ApiResponse(responseCode = "200", description = "Pessoas físicas listadas com sucesso"),
         @ApiResponse(responseCode = "204", description = "Nenhuma pessoa física encontrada")
     })
-    public List<PessoaFisicaModel> todasPessoas() {
+    public List<PacienteModel> todasPessoas() {
         return pessoaFisicaService.todasPessoas();
     }
 
@@ -43,7 +43,7 @@ public class PessoaFisicaController {
         @ApiResponse(responseCode = "200", description = "Pessoa física encontrada com sucesso"),
         @ApiResponse(responseCode = "404", description = "Pessoa física não encontrada")
     })
-    public ResponseEntity<PessoaFisicaModel> pegarPeloId(@PathVariable long id) {
+    public ResponseEntity<PacienteModel> pegarPeloId(@PathVariable long id) {
         return pessoaFisicaService.pegarPeloId(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
@@ -58,7 +58,7 @@ public class PessoaFisicaController {
         @ApiResponse(responseCode = "200", description = "Pessoa física criada com sucesso"),
         @ApiResponse(responseCode = "400", description = "Dados inválidos para criação")
     })
-    public PessoaFisicaModel criarPessoa(@RequestBody PessoaFisicaModel pessoa) {
+    public PacienteModel criarPessoa(@RequestBody PacienteModel pessoa) {
         return pessoaFisicaService.criarPessoa(pessoa);
     }
 
@@ -71,9 +71,9 @@ public class PessoaFisicaController {
         @ApiResponse(responseCode = "200", description = "Pessoa física atualizada com sucesso"),
         @ApiResponse(responseCode = "404", description = "Pessoa física não encontrada")
     })
-    public ResponseEntity<PessoaFisicaModel> atualizarPessoa(
+    public ResponseEntity<PacienteModel> atualizarPessoa(
         @PathVariable long id, 
-        @RequestBody PessoaFisicaModel pessoa
+        @RequestBody PacienteModel pessoa
     ) {
         return pessoaFisicaService.atualizarPessoa(id, pessoa)
                 .map(ResponseEntity::ok)

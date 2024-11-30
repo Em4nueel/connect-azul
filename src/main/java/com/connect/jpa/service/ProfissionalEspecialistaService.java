@@ -29,8 +29,7 @@ public class ProfissionalEspecialistaService {
 
     public Optional<ProfissionalEspecialistaModel> atualizarProfissional(Long id, ProfissionalEspecialistaModel profissionalAtualizado) {
         return repository.findById(id).map(record -> {
-            record.setEspecialidade(profissionalAtualizado.getEspecialista());
-            record.setIdadePaciente(profissionalAtualizado.getIdadePaciente());
+            record.setEspecialidade(profissionalAtualizado.getEspecialidade());
             record.setExperiencia(profissionalAtualizado.getExperiencia());
             return repository.save(record);
         });

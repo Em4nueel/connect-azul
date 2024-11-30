@@ -48,21 +48,21 @@ public class UserController {
         return "Hello World!";
     }
   
-    @PostMapping("/register") 
+    @PostMapping("/register")
     @Operation(
-        summary = "Registrar Novo Usuário", 
+        summary = "Registrar Novo Usuário",
         description = "Cadastra um novo usuário no sistema"
     )
     @ApiResponses({
         @ApiResponse(responseCode = "201", description = "Usuário criado com sucesso"),
         @ApiResponse(responseCode = "400", description = "Dados inválidos para registro")
     })
-    public ResponseEntity<String> addNewUser(
-        @Parameter(description = "Informações do usuário") 
+    public ResponseEntity<UserInfo> addNewUser(
+        @Parameter(description = "Informações do usuário")
         @RequestBody UserInfo userInfo
-    ) { 
-        String response = service.addUser(userInfo); 
-        return ResponseEntity.status(HttpStatus.CREATED).body(response); 
+    ) {
+        UserInfo newUser = service.addUser(userInfo); // Aqui você obtém o usuário completo, incluindo o ID
+        return ResponseEntity.status(HttpStatus.CREATED).body(newUser); // Retorna o usuário com o ID
     } 
   
     @PostMapping("/generateToken") 

@@ -16,7 +16,6 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -27,10 +26,6 @@ public class ProfissionalEspecialistaModel extends PessoaModel implements Serial
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
-
-	@OneToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "usuario_id")
-	private UserInfo usuario;
 
 	@ManyToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "especialidade_id")
@@ -45,14 +40,13 @@ public class ProfissionalEspecialistaModel extends PessoaModel implements Serial
 
 	}
 
-	public ProfissionalEspecialistaModel(UserInfo usuario, EspecialidadeModel especialidade,
+	public ProfissionalEspecialistaModel(EspecialidadeModel especialidade,
 			FaixaEtariaModel idadePaciente, Boolean experiencia, String nomeCompleto, String cpf, Date dataNascimento,
 			EnderecoModel endereco) {
 		super(nomeCompleto, cpf, dataNascimento, endereco);
 		this.especialidade = especialidade;
 		this.idadePaciente = idadePaciente;
 		this.experiencia = experiencia;
-		this.usuario = usuario;
 	}
 
 	public Long getId() {

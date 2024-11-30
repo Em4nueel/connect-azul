@@ -3,7 +3,6 @@ package com.connect.jpa.model;
 import java.io.Serializable;
 import java.util.List;
 import java.util.Objects;
-
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -12,6 +11,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -37,14 +37,19 @@ public class ClinicaOuHospitalModel implements Serializable {
     @JoinColumn(name = "id_clinica")
     private List<EnderecoModel> enderecos;
 
+    @OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "usuario_id")
+	private UserInfo usuario;
+
     public ClinicaOuHospitalModel() {}
 
-    public ClinicaOuHospitalModel(String nome, String cnpj, List<ContatoModel> contatos, List<EnderecoModel> enderecos) {
+    public ClinicaOuHospitalModel(UserInfo usuario, String nome, String cnpj, List<ContatoModel> contatos, List<EnderecoModel> enderecos) {
         super();
         this.nome = nome;
         this.cnpj = cnpj;
         this.contatos = contatos;
         this.enderecos = enderecos;
+        this.usuario = usuario;
     }
 
     public Long getId() {

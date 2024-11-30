@@ -48,9 +48,9 @@ public class UserController {
         return "Hello World!";
     }
   
-    @PostMapping("/register") 
+    @PostMapping("/register")
     @Operation(
-        summary = "Registrar Novo Usuário", 
+        summary = "Registrar Novo Usuário",
         description = "Cadastra um novo usuário no sistema"
     )
     @ApiResponses({
@@ -62,7 +62,7 @@ public class UserController {
         @RequestBody Usuario userInfo
     ) { 
         String response = service.addUser(userInfo); 
-        return ResponseEntity.status(HttpStatus.CREATED).body(response); 
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
     } 
   
     @PostMapping("/generateToken") 

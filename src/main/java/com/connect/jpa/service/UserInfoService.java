@@ -36,12 +36,15 @@ public class UserInfoService implements UserDetailsService {
 			// Se encontrar, lança uma exceção informando que o nome de usuário já existe
 			throw new IllegalArgumentException("User with name " + userInfo.getNome() + " already exists.");
 		}
+	
 		// Codifica a senha do usuário usando o PasswordEncoder antes de salvar no banco
 		userInfo.setSenha(encoder.encode(userInfo.getSenha()));
+	
 		// Salva o objeto UserInfo no repositório (persistência no banco de dados)
-		repository.save(userInfo);
-		// Retorna uma mensagem de sucesso indicando que o usuário foi adicionado
-		return "User Added Successfully";
+		userInfo = repository.save(userInfo); // O ID será gerado automaticamente aqui
+	
+		// Retorna o objeto UserInfo com o ID gerado
+		return userInfo;
 	}
 
 }

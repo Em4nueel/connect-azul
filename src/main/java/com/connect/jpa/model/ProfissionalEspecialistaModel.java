@@ -15,7 +15,6 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -51,7 +50,6 @@ public class ProfissionalEspecialistaModel extends PessoaModel implements Serial
         this.especialidade = especialidade;
         this.faixaEtaria = idadePaciente;
         this.experiencia = experiencia;
-        this.usuario = usuario;
     }
 
     public Long getId() {

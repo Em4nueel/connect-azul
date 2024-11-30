@@ -3,7 +3,6 @@ package com.connect.jpa.model;
 import java.io.Serializable;
 import java.util.List;
 import java.util.Objects;
-
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

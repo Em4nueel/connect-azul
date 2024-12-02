@@ -28,9 +28,7 @@ public class PacienteService {
     }
 
     public PacienteModel criarPaciente(PacienteModel paciente) {
-        Usuario usuario = new Usuario();
-        usuario.setNome(paciente.getNomeCompleto());
-        usuario.setSenha(paciente.getCpf());
+        Usuario usuario = paciente.getUsuario();
 
         Usuario usuarioCriado = usuarioService.addUser(usuario);
 

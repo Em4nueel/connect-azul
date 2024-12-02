@@ -37,9 +37,7 @@ public class ClinicaOuHospitalService {
     }
 
     public ClinicaOuHospitalModel criarClinica(ClinicaOuHospitalModel clinica) {
-        Usuario usuario = new Usuario();
-        usuario.setNome(clinica.getNome());
-        usuario.setSenha(clinica.getCnpj());
+        Usuario usuario = clinica.getUsuario();
 
         Usuario usuarioCriado = usuarioService.addUser(usuario);
 

@@ -51,6 +51,25 @@ public class ClinicaProfissionalController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
+    @GetMapping("/clinica/{clinicaId}")
+    @Operation(
+        summary = "Listar Relações por ID da Clínica", 
+        description = "Recupera todas as relações entre uma clínica específica e seus profissionais"
+    )
+    @ApiResponses({
+        @ApiResponse(responseCode = "200", description = "Relações encontradas com sucesso"),
+        @ApiResponse(responseCode = "204", description = "Nenhuma relação encontrada para essa clínica")
+    })
+    public ResponseEntity<List<ClinicaProfissionalModel>> listarPorClinicaId(@PathVariable Long clinicaId) {
+        List<ClinicaProfissionalModel> relacoes = clinicaProfissionalService.listarPorClinicaId(clinicaId);
+        
+        if (relacoes.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+        
+        return ResponseEntity.ok(relacoes);
+    }
+
     @PostMapping("/novo")
     @Operation(
         summary = "Criar Nova Relação", 

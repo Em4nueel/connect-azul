@@ -25,6 +25,10 @@ public class ClinicaProfissionalService {
         return clinicaProfissionalRepository.findAll();
     }
 
+    public List<ClinicaProfissionalModel> listarPorClinicaId(Long clinicaId) {
+        return clinicaProfissionalRepository.findByClinicaId(clinicaId);
+    }
+
     public Optional<ClinicaProfissionalModel> pegarPeloId(Long id) {
         return clinicaProfissionalRepository.findById(id);
     }

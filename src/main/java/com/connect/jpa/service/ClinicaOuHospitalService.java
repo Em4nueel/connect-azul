@@ -26,10 +26,10 @@ public class ClinicaOuHospitalService {
 
     public List<ClinicaOuHospitalModel> buscarPorTermo(String termo) {
         String termoNormalizado = Normalizer.normalize(termo, Normalizer.Form.NFD)
-        .replaceAll("[\\p{InCombiningDiacriticalMarks}]", "")
-        .toLowerCase();
-
-        return repository.findByNomeNormalizado(termoNormalizado + "%");
+            .replaceAll("[\\p{InCombiningDiacriticalMarks}]", "")
+            .toLowerCase();
+    
+        return repository.findByNomeNormalizado("%" + termoNormalizado + "%");
     }
 
     public Optional<ClinicaOuHospitalModel> pegarPeloId(Long id) {

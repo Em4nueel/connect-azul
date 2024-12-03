@@ -26,7 +26,7 @@ public class ClinicaOuHospitalModel implements Serializable {
     @Column(name = "nome_clinica_hospital")
     private String nome;
 
-    @Column(name = "cnpj", length = 14, nullable = false, unique = true)
+    @Column(name = "cnpj", length = 45, nullable = false, unique = true)
     private String cnpj;
 
     @OneToMany(cascade = CascadeType.ALL)
